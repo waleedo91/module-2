@@ -19,11 +19,24 @@ class Character:
         
     def special_ability(self):
         pass
+    
+    def heal(self):
+        if self.health <= 120:
+            self.health += 5
+            print(f'{self.name} healed for 5 health points!')
+            print(f'{self.name} has {self.health} left')
+        else:
+            print(f'{self.name} is already at max health!')
 
 # Warrior class (inherits from Character)
 class Warrior(Character):
     def __init__(self, name):
         super().__init__(name, health=140, attack_power=25)
+        
+    def attack(self, opponent):
+        self.attack_power = random.randint(1,40)
+        opponent.health -= self.attack_power
+        print(f'{self.name} attacked {opponent.name} for {self.attack_power}!')    
     
     def special_ability(self, opponent):
         self.attack_power = random.randint(1,50)
@@ -35,6 +48,11 @@ class Warrior(Character):
 class Mage(Character):
     def __init__(self, name):
         super().__init__(name, health=100, attack_power=35)
+    
+    def attack(self, opponent):
+        self.attack_power = random.randint(1,15)
+        opponent.health -= self.attack_power
+        print(f'{self.name} attacked {opponent.name} for {self.attack_power}!')
 
 # EvilWizard class (inherits from Character)
 class EvilWizard(Character):
@@ -58,30 +76,48 @@ class Archer(Character):
     def special_ability(self, opponent):
         print('Please select a special ability!')
         print('----------------------------------')
-        ability = int(input('1. Evade or 2. Quick Shot'))
+        print('1. Evade')
+        print('2. Quick Shot')
+        ability = int(input('Please select an ability! '))
         if ability == 1:
-            opponent.attack = 0
+            self.health += 15
             print(f'{self.name} evaded and took no damage from {opponent.name}')
-        else:
-            first_shot = random.randint(1, 10)
-            second_shot = random.randint(1, 10)
+            
+        if ability == 2:
+            first_shot = random.randint(1, 20)
+            second_shot = random.randint(1, 20)
             self.attack_power = first_shot + second_shot
             opponent.health -= self.attack_power
             print(f'{self.name} used quick shot! first arrow for {first_shot} and second arrow for {second_shot}!')
+            
+    
         
-        
-        
-
 
 # Create Paladin class 
 class Paladin(Character):
     def __init__(self, name):
         super().__init__(name, health=100, attack_power=20)
+        
+    def attack(self, opponent):
+        self.attack_power = random.randint(1,30)
+        print(f'{self.name} attacked the {opponent.name} for {self.attack_power}!')
     
-    def heal(self):
-        if self.health <= 150:
-            self.health += random.randint(1, 25)
-        print(f'{self.name} healed themselves! Health at {self.health}')
+    def special_ability(self, opponent):
+        print('Please select a special ability!')
+        print('----------------------------------')
+        print('1. Holy Strike')
+        print('2. Divine Shield')
+        ability = int(input('Please select an ability! '))
+        
+        if ability == 1:
+            chance = random.randint(1,10)
+            if chance >= 5:
+                self.attack_power += 20
+                print(f'{self.name} used Holy strike against {opponent.name} for {self.attack_power}')
+            
+        if ability == 2:
+            self.health += 15
+            print(f'{self.name} used Divine Shield and took no damage!')     
 
 def create_character():
     print("Choose your character class:")
